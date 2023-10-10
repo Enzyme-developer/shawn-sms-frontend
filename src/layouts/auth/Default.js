@@ -48,7 +48,7 @@ function AuthIllustration(props) {
               color='secondaryGray.600'
             />
             <Text ms='0px' fontSize='sm' color='secondaryGray.600'>
-              Back to Simmmple
+              Back to Shawn-sms
             </Text>
           </Flex>
         </NavLink>
@@ -73,7 +73,7 @@ function AuthIllustration(props) {
         </Box>
         <Footer />
       </Flex>
-      <FixedPlugin />
+      {/* <FixedPlugin /> */}
     </Flex>
   );
 }

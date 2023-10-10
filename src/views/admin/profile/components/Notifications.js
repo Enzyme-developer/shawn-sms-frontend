@@ -1,14 +1,40 @@
+import React from "react";
 // Chakra imports
-import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 // Custom components
 import SwitchField from "components/fields/SwitchField";
 import Menu from "components/menu/MainMenu";
+import { handleError } from "helpers/handleError";
+import toast from "react-hot-toast";
+import { verifyAccount } from "services/userService";
 
 export default function Notifications(props) {
+  const [loading, setLoading] = React.useState(false);
+
   const { ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
+
+  const handleEmailVerification = async () => {
+    setLoading(true);
+    try {
+      const response = await verifyAccount({
+        email: "talabiayomide2000@gmail.com",
+      });
+      console.log(response);
+      if (response.status === 200) {
+        toast.success(response?.data.message);
+      } else {
+        toast.error(handleError(response.data));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card mb="20px" mt="40px" mx="auto" maxW="410px" {...rest}>
       <Flex align="center" w="100%" justify="space-between" mb="30px">
@@ -18,9 +44,9 @@ export default function Notifications(props) {
           fontSize="2xl"
           mb="4px"
         >
-          Notifications
+          Preferences
         </Text>
-        <Menu />
+        {/* <Menu /> */}
       </Flex>
       <SwitchField
         isChecked={true}
@@ -28,74 +54,44 @@ export default function Notifications(props) {
         fontSize="sm"
         mb="20px"
         id="1"
-        label="Item update notifications"
+        label="2-factor authentication"
       />
-      <SwitchField
-        reversed={true}
+      <Button
         fontSize="sm"
+        variant="brand"
+        fontWeight="500"
+        w="100%"
         mb="20px"
-        id="2"
-        label="Item comment notifications"
-      />
-      <SwitchField
-        isChecked={true}
-        reversed={true}
+        h="50"
+        onClick={props.onOpen}
+      >
+        Change Password
+      </Button>
+
+      <Button
         fontSize="sm"
+        variant="brand"
+        fontWeight="500"
+        w="100%"
+        h="50"
         mb="20px"
-        id="3"
-        label="Buyer review notifications"
-      />
-      <SwitchField
-        isChecked={true}
-        reversed={true}
+        onClick={() => props.setActiveId("updateProfile")}
+      >
+        Update Profile
+      </Button>
+
+      <Button
         fontSize="sm"
-        mb="20px"
-        id="4"
-        label="Rating reminders notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="5"
-        label="Meetups near you notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="6"
-        label="Company news notifications"
-      />
-      <SwitchField
-        isChecked={true}
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="7"
-        label="New launches and projects"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="8"
-        label="Monthly product changes"
-      />
-      <SwitchField
-        isChecked={true}
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="9"
-        label="Subscribe to newsletter"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        id="10"
-        label="Email me when someone follows me"
-      />
+        variant="ghost"
+        fontWeight="500"
+        w="100%"
+        h="50"
+        loadingText="verifying"
+        isLoading={loading}
+        onClick={handleEmailVerification}
+      >
+        Verify Account
+      </Button>
     </Card>
   );
 }

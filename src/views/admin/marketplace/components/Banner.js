@@ -61,13 +61,8 @@ export default function Banner() {
           py='20px'
           px='27'
           me='38px'>
-          Discover now
+          Buy Now
         </Button>
-        <Link>
-          <Text color='white' fontSize='sm' fontWeight='500'>
-            Watch video
-          </Text>
-        </Link>
       </Flex>
     </Flex>
   );
